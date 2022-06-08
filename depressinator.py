@@ -1,5 +1,4 @@
 import gtts
-from httpx import get
 import numpy as np
 import random
 from gtts import gTTS
