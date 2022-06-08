@@ -1,6 +1,3 @@
-from time import *
-from tracemalloc import start
-import click
 import gtts
 from httpx import get
 import numpy as np
