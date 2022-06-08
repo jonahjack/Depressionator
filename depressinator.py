@@ -10,6 +10,8 @@ import webbrowser
 import playsound
 import datetime
 
+#now supporting git
+
 # making the insults
 col1 = ["Artless","Bawdy","Beslubbering","Bootless","Churlish","Cockered ","Clouted","Craven","Currish","Dankish","Dissembling","Droning","Errant","Fawning","Fobbing","Froward","Frothy","Gleeking","Goatish","Gorbellied","Impertinent","Infectious","Jarring","Loggerheaded","Lumpish","Mammering","Mangled","Mewling","Paunchy","Pribbling","Puking","Puny","Qualling","Rank","Reeky","Roguish","Ruttish","Saucy","Spleeny","Spongy","Surly","Tottering","Unmuzzled","Vain","Venomed","Villainous","Warped"]
 col2 = ["base-court","bat-fowling","beef-witted","beetle-headed","boil-brained","common-kissing","crook-pated","dismal-dreaming","dizzy-eyed","dog-hearted","dread-bolted","earth-vexing","elf-skinned","fat-kidneyed","fen-sucked","flap-mouthed","fly-bitten","folly-fallen","fool-born","full-gorged","futs-griping","half-faced","hasty-witted ","hedge-born","hell-hated","idle-headed","ill-nurtured","knotty-pated","milk-livered","motley-minded","onion-eyed","plume-plucked","pottle-deep ","pox-marked","reeling-ripe","rough-hewn","rude-growing","rump-fed","shard-borne","sheep-biting","spur-galled","swag-bellied","tardy-gaited","tickle-brained","toad-spotted","unchin-snouted","weather-bitten"]
