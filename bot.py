@@ -1,6 +1,12 @@
 from twitchio.ext import commands
 
 
+badwords = []
+badWords = open('BannedWords.txt', 'r')
+for line in badWords.readlines():
+    line = line.strip()
+    badwords.append(line)
+
 class Bot(commands.Bot):
 
     def __init__(self):
@@ -37,8 +43,15 @@ class Bot(commands.Bot):
         # Send a hello back!
         # Sending a reply back to the channel is easy... Below is an example.
         await ctx.send(f'Hello {ctx.author.name}!')
-    async def trigger(self, ctx: commands.Context):
-        await ctx.send(f'Hello {ctx.author.name} and thank you for the trigger word submission, your answer is being evaluated and will be added shortly')
+    @commands.command()
+    async def trigger(self, ctx: commands.Context, message):
+        await ctx.send(f'Hello {ctx.author.name} and thank you for the trigger word submission, your answer is being evaluated and will be added shortly. Keep in mind it has been added to a list and will be chosen at random')
+        lowerMessage = message.lower()
+        res = any(ele in lowerMessage for ele in badwords)
+        if res != True:
+            with open("TriggerWords.txt","a") as file:
+                file.write(message + "\n")
+        
         
 
 
