@@ -1,20 +1,47 @@
-import os
 from twitchio.ext import commands
 
-# set up the bot
-bot = commands.Bot(
-    token=os.environ['TMI_TOKEN'],
-    client_id=os.environ['CLIENT_ID'],
-    nick=os.environ['BOT_NICK'],
-    prefix=os.environ['BOT_PREFIX'],
-    initial_channels=[os.environ['CHANNEL']]
-)
 
-@bot.event
-async def event_ready():
-    print(f"{os.environ['BOT_NICK']} is online!")
-    ws = bot._ws  # this is only needed to send messages within event_ready
-    await ws.send_privmsg(os.environ['CHANNEL'], f"/me has landed!")
+class Bot(commands.Bot):
 
-if __name__ == "__main__":
-    bot.run()
+    def __init__(self):
+        # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
+        # prefix can be a callable, which returns a list of strings or a string...
+        # initial_channels can also be a callable which returns a list of strings...
+        super().__init__(token='rv34fcnd2brm9qh2x5nt665rpkfvu6', prefix='!', initial_channels=['JonahCJackson'])
+
+    async def event_ready(self):
+        # Notify us when everything is ready!
+        # We are logged in and ready to chat and use commands...
+        print(f'Logged in as | {self.nick}')
+        print(f'User id is | {self.user_id}')
+
+    async def event_message(self, message):
+        # Messages with echo set to True are messages sent by the bot...
+        # For now we just want to ignore them...
+        if message.echo:
+            return
+
+        # Print the contents of our message to console...
+        print(message.content)
+
+        # Since we have commands and are overriding the default `event_message`
+        # We must let the bot know we want to handle and invoke our commands...
+        await self.handle_commands(message)
+
+    @commands.command()
+    async def hello(self, ctx: commands.Context):
+        # Here we have a command hello, we can invoke our command with our prefix and command name
+        # e.g ?hello
+        # We can also give our commands aliases (different names) to invoke with.
+
+        # Send a hello back!
+        # Sending a reply back to the channel is easy... Below is an example.
+        await ctx.send(f'Hello {ctx.author.name}!')
+    async def trigger(self, ctx: commands.Context):
+        await ctx.send(f'Hello {ctx.author.name} and thank you for the trigger word submission, your answer is being evaluated and will be added shortly')
+        
+
+
+bot = Bot()
+bot.run()
+# bot.run() is blocking and will stop execution of any below code here until stopped or closed.
