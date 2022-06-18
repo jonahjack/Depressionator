@@ -1,7 +1,11 @@
 from twitchio.ext import commands
-import sys
-sys.path.insert(0, "../")
-import Vars
+import os
+import json
+
+global Information
+Information = {}
+with open('data.json') as json_file:
+    Information = json.load(json_file)
 
 badwords = []
 badWords = open('BannedWords.txt', 'r')
@@ -9,13 +13,22 @@ for line in badWords.readlines():
     line = line.strip()
     badwords.append(line)
 
+def getVars(token, prefix, channel):
+    global Token, Prefix, Channel
+    Token = token
+    Prefix = prefix
+    Channel=channel
+
+getVars(token=Information['Auth'], prefix='!', channel=Information['Channel'])
+
+
 class Bot(commands.Bot):
 
     def __init__(self):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
-        super().__init__(token=Vars.token, prefix=Vars.prefix, initial_channels=[Vars.channel])
+        super().__init__(token=Token, prefix=Prefix, initial_channels=[Channel])
 
     async def event_ready(self):
         # Notify us when everything is ready!

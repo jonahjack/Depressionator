@@ -9,6 +9,7 @@ import tkinter as tk
 import webbrowser
 import playsound
 import datetime
+import json
 
 #now supporting git
 
@@ -26,11 +27,16 @@ options = [
     "4"
 ]
 
+global Information
+Information = {}
+
 triggerWord1 = ""
 triggerWord2 = ""
 triggerWord3 = ""
 triggerWord4 = ""
 
+twitchmode = False
+regulatmode = True
 isInsult = False
 
 
@@ -147,7 +153,7 @@ def makeRegButton(): # makes the Regular mode buttons
 
 def makeStreamButton(): # makes the Twitch mode buttons
     global stream_button
-    stream_button = tk.Button(root, text="Twitch Mode(Coming Soon)", command= streamMode)
+    stream_button = tk.Button(root, text="Twitch Mode   ", command= streamMode)
     stream_button.grid(row=3,column=0,pady=3)
 
 def makeFrame(): # makes the frame used for either mode 
@@ -158,6 +164,8 @@ def makeFrame(): # makes the frame used for either mode
 
 def regularMode(): # makes the menu and variables for the regular mode
     clearframe(clear=frame) # clears the frame for the new menu to be created
+    regulatmode = True
+    twitchmode = False
     global regEntryText
     regEntryText = tk.Label(frame, text="Trigger Word Count:")
     regEntryText.pack()
@@ -199,7 +207,29 @@ def regSubmitEntry():
 
 def streamMode(): # makes the menu and variables for the Twitch mode
     clearframe(clear=frame)
-    comingsoon = tk.Label(frame, text="Coming Soon").pack()
+    regulatmode = False # Toggles Between Streamer And Reg Mode
+    twitchmode = True
+    global entry1Sub
+    entry1Sub = tk.StringVar()
+    entry1text = tk.Label(frame, text="Auth Code").pack()
+    entry1 = tk.Entry(frame, textvariable=entry1Sub, show="*") # show makes it possible to protect your password visibly
+    entry1.pack(pady=3)
+    global entry2Sub
+    entry2Sub = tk.StringVar()
+    entry1text = tk.Label(frame, text="Username").pack()
+    entry2 = tk.Entry(frame, textvariable=entry2Sub)
+    entry2.pack(pady=3)
+    twitchsubButton = tk.Button(frame, text="Submit", command=streammodeSubmit).pack()
+    
+def streammodeSubmit(): # send the vars to be used in a txt format
+    clearframe(clear=frame)
+    closeprompt = tk.Label(frame, text="Trigger words will be determined by audience, suggestions containing Bad Words are thrown out though.\nIf you want to continue in this mode, close this window!").pack()
+    Information['Auth'] = entry1Sub.get()
+    Information['Channel'] = entry2Sub.get()
+    with open("data.json", "w") as write_file:
+        json.dump(Information, write_file)
+        write_file.close()
+
 
 def assignVariables(): # assigns the variables
     num = 0
@@ -247,13 +277,26 @@ root.mainloop()
 #End of tkinter loop
 
 #Start of program after the menu
-playsound.playsound('Intoduction.mp3')
+# playsound.playsound('Intoduction.mp3')
 
-triggerWord1 = values['val1'] # setting the variables to the trigger words
-triggerWord2 = values['val2'] # setting the variables to the trigger words
-triggerWord3 = values['val3'] # setting the variables to the trigger words
-triggerWord4 = values['val4'] # setting the variables to the trigger words
-
+if regulatmode == True:
+    try:
+        triggerWord1 = values['val1'] # setting the variables to the trigger words
+        triggerWord2 = values['val2'] # setting the variables to the trigger words
+        triggerWord3 = values['val3'] # setting the variables to the trigger words
+        triggerWord4 = values['val4'] # setting the variables to the trigger words
+    except Exception as e:
+        pass
+if twitchmode == True:
+    trigger = []
+    Trigger = open('TriggerWords.txt', 'r')
+    for line in Trigger.readlines():
+        line = line.strip()
+        trigger.append(line)
+    triggerWord1 = random.choice(trigger)
+    triggerWord2 = random.choice(trigger)
+    triggerWord3 = random.choice(trigger)
+    triggerWord4 = random.choice(trigger)
 
 get_Audio() # starts cycle 
 
