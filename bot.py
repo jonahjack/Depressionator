@@ -1,5 +1,7 @@
 from twitchio.ext import commands
-
+import sys
+sys.path.insert(0, "../")
+import Vars
 
 badwords = []
 badWords = open('BannedWords.txt', 'r')
@@ -13,7 +15,7 @@ class Bot(commands.Bot):
         # Initialise our Bot with our access token, prefix and a list of channels to join on boot...
         # prefix can be a callable, which returns a list of strings or a string...
         # initial_channels can also be a callable which returns a list of strings...
-        super().__init__(token='rv34fcnd2brm9qh2x5nt665rpkfvu6', prefix='!', initial_channels=['JonahCJackson'])
+        super().__init__(token=Vars.token, prefix=Vars.prefix, initial_channels=[Vars.channel])
 
     async def event_ready(self):
         # Notify us when everything is ready!
@@ -50,6 +52,14 @@ class Bot(commands.Bot):
         res = any(ele in lowerMessage for ele in badwords)
         if res != True:
             with open("TriggerWords.txt","a") as file:
+                file.write(message + "\n")
+    @commands.command()
+    async def Insult(self, ctx: commands.Context, message):
+        await ctx.send(f'Hello {ctx.author.name} and thank you for the Insult submission, your answer is being evaluated and will be added shortly. Keep in mind it has been added to a list and will be chosen at random')
+        lowerMessage = message.lower()
+        res = any(ele in lowerMessage for ele in badwords)
+        if res != True:
+            with open("Insults.txt","a") as file:
                 file.write(message + "\n")
         
         
