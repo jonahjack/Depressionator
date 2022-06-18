@@ -224,11 +224,11 @@ def streamMode(): # makes the menu and variables for the Twitch mode
 def streammodeSubmit(): # send the vars to be used in a txt format
     clearframe(clear=frame)
     closeprompt = tk.Label(frame, text="Trigger words will be determined by audience, suggestions containing Bad Words are thrown out though.\nIf you want to continue in this mode, close this window!").pack()
-    Information['Auth'] = entry1Sub.get()
+    Information['Auth'] = entry1Sub.get() # sends the entry data to a dic slot
     Information['Channel'] = entry2Sub.get()
-    with open("data.json", "w") as write_file:
-        json.dump(Information, write_file)
-        write_file.close()
+    with open("data.json", "w") as write_file: # opens a json file
+        json.dump(Information, write_file) # dumps the data to the json file
+        write_file.close() # closes the json file
 
 
 def assignVariables(): # assigns the variables
@@ -288,12 +288,12 @@ if regulatmode == True:
     except Exception as e:
         pass
 if twitchmode == True:
-    trigger = []
-    Trigger = open('TriggerWords.txt', 'r')
-    for line in Trigger.readlines():
-        line = line.strip()
-        trigger.append(line)
-    triggerWord1 = random.choice(trigger)
+    trigger = [] # maeks a trigger list
+    Trigger = open('TriggerWords.txt', 'r')  #opens the trigger words file
+    for line in Trigger.readlines(): # for each line in this txt file...
+        line = line.strip() # gets rid of the \n at the end of each line
+        trigger.append(line) # adds the line to the list
+    triggerWord1 = random.choice(trigger) # chooses a random item in the list x4
     triggerWord2 = random.choice(trigger)
     triggerWord3 = random.choice(trigger)
     triggerWord4 = random.choice(trigger)

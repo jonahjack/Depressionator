@@ -1,3 +1,4 @@
+from contextvars import Context
 from twitchio.ext import commands
 import os
 import json
@@ -30,11 +31,12 @@ class Bot(commands.Bot):
         # initial_channels can also be a callable which returns a list of strings...
         super().__init__(token=Token, prefix=Prefix, initial_channels=[Channel])
 
-    async def event_ready(self):
+    async def event_ready(self, ctx: Context):
         # Notify us when everything is ready!
         # We are logged in and ready to chat and use commands...
-        print(f'Logged in as | {self.nick}')
-        print(f'User id is | {self.user_id}')
+        print(f'Logged in as {self.nick}, get ready for a bumpy landing!')
+        await ctx.send(f'Logged in as {self.nick}, get ready for a bumpy landing!')
+
 
     async def event_message(self, message):
         # Messages with echo set to True are messages sent by the bot...
