@@ -53,14 +53,17 @@ class Bot(commands.Bot):
         if res != True:
             with open("TriggerWords.txt","a") as file:
                 file.write(message + "\n")
+                file.close()
     @commands.command()
-    async def Insult(self, ctx: commands.Context, message):
+    async def insult(self, ctx: commands.Context, message):
         await ctx.send(f'Hello {ctx.author.name} and thank you for the Insult submission, your answer is being evaluated and will be added shortly. Keep in mind it has been added to a list and will be chosen at random')
         lowerMessage = message.lower()
         res = any(ele in lowerMessage for ele in badwords)
         if res != True:
+            print(message)
             with open("Insults.txt","a") as file:
                 file.write(message + "\n")
+                file.close()
         
         
 
